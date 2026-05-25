@@ -151,7 +151,7 @@ void run_sim(int maxtime)
 		<< "R = " << R << " peers" << std::endl;
 }
 
-void generate_net()
+void generate_net(int num)
 {
 	for(int i = 0; i < num; i++)
 	{
@@ -195,7 +195,7 @@ int main(int argc, char** argv)
 	std::cout << std::endl << "Maximum number of connections initiated by each peer: ";
 	std::cin >> MAXINIT;
 	std::cout << std::endl << "Generating network..." << std::endl << std::endl;;
-	generate_net();	
+	generate_net(num);	
 	
 	std::cout << std::endl << "Running simulation..." << std::endl << std::endl;
 	run_sim(maxtime);
