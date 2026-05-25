@@ -151,32 +151,8 @@ void run_sim(int maxtime)
 		<< "R = " << R << " peers" << std::endl;
 }
 
-int main(int argc, char** argv)
+void generate_net()
 {
-	srand(time(0));
-	int num = 25;
-	int maxtime = 500000;
-	if(argc > 1)
-	{
-		std::stringstream ss;
-		ss << argv[1];
-		ss >> num;
-	}
-	if(argc > 2)
-	{
-		std::stringstream ss;
-		ss << argv[2];
-		ss >> maxtime;
-	}
-	std::cout << "Number of nodes: ";
-	std::cin >> num;
-	std::cout << std::endl << "Maximum iteration time (mircroseconds): ";
-	std::cin >> maxtime;
-	std::cout << std::endl << "Maximum number of connections per peer: ";
-	std::cin >> MAXCONN;
-	std::cout << std::endl << "Maximum number of connections initiated by each peer: ";
-	std::cin >> MAXINIT;
-	std::cout << std::endl << "Generating network..." << std::endl << std::endl;;
 	for(int i = 0; i < num; i++)
 	{
 		add_node();
@@ -203,7 +179,24 @@ int main(int argc, char** argv)
 	}
 	for(int i = 0; i < numnodes; i++)
 		write_node(i);
+}
 
+int main(int argc, char** argv)
+{
+	srand(time(0));
+	int num = 25;
+	int maxtime = 500000;
+	std::cout << "Number of nodes: ";
+	std::cin >> num;
+	std::cout << std::endl << "Maximum iteration time (mircroseconds): ";
+	std::cin >> maxtime;
+	std::cout << std::endl << "Maximum number of connections per peer: ";
+	std::cin >> MAXCONN;
+	std::cout << std::endl << "Maximum number of connections initiated by each peer: ";
+	std::cin >> MAXINIT;
+	std::cout << std::endl << "Generating network..." << std::endl << std::endl;;
+	generate_net();	
+	
 	std::cout << std::endl << "Running simulation..." << std::endl << std::endl;
 	run_sim(maxtime);
 	std::cout << std::endl;
