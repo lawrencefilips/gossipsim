@@ -47,27 +47,7 @@ bool connect_nodes(unsigned int i0, unsigned int i1)
 
 void autoconnect(unsigned int i0, unsigned int i1, bool* attempted)
 {
-	if(nodes[i0]->numinit >= MAXINIT)return;
-	connect_nodes(i0, i1);
-	attempted[i1] = true;
-	bool* att2 = new bool[MAXCONN];
-	for(int i = 0; i < MAXCONN; i++)att2[i] = false;
-	if(nodes[i1]->numconn)
-	{
-	start:
-		unsigned int i = rand() % nodes[i1]->numconn;
-		if(!attempted[nodes[i1]->conn[i]])
-			autoconnect(i0, nodes[i1]->conn[i], attempted);
-		if(nodes[i0]->numinit >= MAXINIT)
-		{
-			delete[] att2;
-			return;
-		}
-		att2[i] = true;
-		for(int i = 0; i < nodes[i1]->numconn; i++)
-			if(!att2[i])goto start;
-	}
-	delete[] att2;
+	
 }
 
 void write_node(unsigned int i)
@@ -156,26 +136,12 @@ void generate_net(int num)
 	for(int i = 0; i < num; i++)
 	{
 		add_node();
-		bool* attempted = new bool[numnodes];
-		for(int j = 0; j < numnodes; j++)
-			attempted[j] = false;
-		autoconnect(i, 0, attempted);
-		delete[] attempted;
-	}
-	while(1)
-	{
-		bool cont = false;
-		for(int i = 0; i < numnodes; i++)
-			if(!nodes[i]->numconn)
+		for(int j = 0; j < MAXINIT; j++)
+			for(int k = 0; k < 256; k++)
 			{
-				cont = true;
-				bool* attempted = new bool[numnodes];
-				for(int j = 0; j < numnodes; j++)
-					attempted[j] = false;
-				autoconnect(i, 0, attempted);
-				delete[] attempted;
+				int i1 = rand() % numnodes;
+				if(connect_nodes(i, i1))break;
 			}
-		if(!cont)break;
 	}
 	for(int i = 0; i < numnodes; i++)
 		write_node(i);
@@ -195,8 +161,8 @@ int main(int argc, char** argv)
 	std::cout << std::endl << "Maximum number of connections initiated by each peer: ";
 	std::cin >> MAXINIT;
 	std::cout << std::endl << "Generating network..." << std::endl << std::endl;;
-	generate_net(num);	
-	
+	generate_net(num);
+
 	std::cout << std::endl << "Running simulation..." << std::endl << std::endl;
 	run_sim(maxtime);
 	std::cout << std::endl;
