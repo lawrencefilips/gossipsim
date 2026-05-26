@@ -45,14 +45,9 @@ bool connect_nodes(unsigned int i0, unsigned int i1)
 	return true;
 }
 
-void autoconnect(unsigned int i0, unsigned int i1, bool* attempted)
-{
-	
-}
-
 void write_node(unsigned int i)
 {
-	std::cout << i << " - ";
+	std::cout << i << " -> ";
 	node* n0 = nodes[i];
 	for(int i = 0; i < n0->numconn; i++)
 		std::cout << n0->conn[i] << " ";
